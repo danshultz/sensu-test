@@ -40,16 +40,21 @@ Vagrant.configure("2") do |config|
       chef.data_bags_path = "data_bags"
       chef.json = {
         :sensu => {
-          :server_root_password => 'rootpass',
-          :server_debian_password => 'debpass',
-          :server_repl_password => 'replpass',
-          :use_ssl => false
+          :rabbitmq => {
+            :host => "33.33.33.11"
+          },
+          :redis => {
+            :host => "33.33.33.11"
+          },
+          :api => {
+            :host => "33.33.33.11"
+          }
         }
       }
 
       chef.run_list = [
-        "recipe[sensu]",
-        "recipe[sensu::client_service]",
+        "recipe[sensu-test::client]",
+        "recipe[sensu-test::cron_check]",
       ]
     end
   }
