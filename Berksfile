@@ -2,4 +2,4 @@ site :opscode
 
 metadata
 
-cookbook('sensu', :git => 'git@github.com:sensu/sensu-chef.git')
+cookbook('sensu', "~> 0.6.0")
