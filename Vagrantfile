@@ -20,31 +20,17 @@ Vagrant.configure("2") do |config|
     }
   end
 
-  build(config, "sensu-web", 11) { |c|
+  build(config, "sensu-server", 11) { |c|
     c.vm.provider("virtualbox") { |v|
       v.customize ["modifyvm", :id, "--memory", 1024]
     }
 
     c.vm.provision :chef_solo do |chef|
       chef.data_bags_path = "data_bags"
-      chef.json = {
-        :sensu => {
-          :server_root_password => 'rootpass',
-          :server_debian_password => 'debpass',
-          :server_repl_password => 'replpass',
-          :use_ssl => false
-        }
-      }
+      chef.json = { }
 
       chef.run_list = [
-        "recipe[sensu-test::default]",
-        "recipe[sensu]",
-        "recipe[sensu::rabbitmq]",
-        "recipe[sensu::redis]",
-        "recipe[sensu::server_service]",
-        "recipe[sensu::client_service]",
-        "recipe[sensu::api_service]",
-        "recipe[sensu::dashboard_service]"
+        "recipe[sensu-test::server]",
       ]
     end
   }
@@ -56,7 +42,8 @@ Vagrant.configure("2") do |config|
         :sensu => {
           :server_root_password => 'rootpass',
           :server_debian_password => 'debpass',
-          :server_repl_password => 'replpass'
+          :server_repl_password => 'replpass',
+          :use_ssl => false
         }
       }
 
